@@ -1,0 +1,25 @@
+{
+  "name": "podboi",
+  "version": "0.0.0",
+  "description": "Bulk download and tag podcast feeds!",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwaresoft/podboi.git"
+  },
+  "keywords": [
+    "podcast"
+  ],
+  "author": "jwaresoft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwaresoft/podboi/issues"
+  },
+  "homepage": "https://github.com/jwaresoft/podboi#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
