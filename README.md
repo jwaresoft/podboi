@@ -4,7 +4,7 @@ A simple cli for bulk downloading entire podcast feeds.  Podboi also adds episod
 
 ## Install
 
-A few ways to install podboi
+Here are a few ways to install podboi.  Pick the one that you like the best.
 
 ### npm / nodejs
 
