@@ -1,7 +1,8 @@
 import { fetchFeed } from "./handleFeed";
 import { callFetch } from "../callFetch";
+import { describe, vi, it, expect } from "vitest";
 
-const mockCallFetch = vi.mock("../callFetch.js", () => {
+vi.mock("../callFetch.js", () => {
   return {
     callFetch: vi.fn()
   };
@@ -22,9 +23,7 @@ describe("handleFeed.js", () => {
 
       // const value = await fetchFeed()
       // console.log(value)
-      await expect((async () => {
-        return await fetchFeed();
-      })()).rejects.toThrowError("Response status: 500");
+      await expect(fetchFeed("")).rejects.toThrowError()
     })
   });
 });

@@ -6,18 +6,17 @@ import { callFetch } from "../callFetch.js";
  * @param {string} url
  */
 export async function fetchFeed(url) {
-  return new Promise(async (resolve, reject) => {
-    try {
+  try {
     const response = await callFetch(url);
     if (!response.ok) {
-      reject(new Error(`Response status: ${response.status}`));
+      return Promise.reject(new Error(`Response status: ${response.status}`));
     }
 
-    resolve(response.text());
+    return response.text();
   } catch (error) {
-    reject(error.message);
+    console.error(error.message);
+    return Promise.reject(error);
   }
-}) 
 }
 
 // const feed = await fetchFeed('http://feeds.libsyn.com/458346/rss')
