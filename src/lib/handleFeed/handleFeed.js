@@ -18,7 +18,3 @@ export async function fetchFeed(url) {
     return Promise.reject(error);
   }
 }
-
-// const feed = await fetchFeed('http://feeds.libsyn.com/458346/rss')
-// console.log(feed)
-
