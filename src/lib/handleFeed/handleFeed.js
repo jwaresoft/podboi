@@ -53,7 +53,7 @@ export function convertXMLFeedToObject(xmlFeed) {
  * @param {*} feedObj 
  * @returns 
  */
-export function extractFeedTitleFromObj(feedObj) {
+export function extractTitleFromObj(feedObj) {
   return feedObj && feedObj.title ? feedObj.title : ""
 }
 

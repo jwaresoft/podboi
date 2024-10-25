@@ -1,7 +1,7 @@
 import {
   fetchFeed,
   convertXMLFeedToObject,
-  extractFeedTitleFromObj,
+  extractTitleFromObj,
   extractImageUrlFromObj,
 } from "./handleFeed.js";
 import { callFetch } from "../callFetch/callFetch.js";
@@ -73,20 +73,20 @@ describe("handleFeed.js", () => {
       let xmlContent = fs.readFileSync(fullFilePath, "utf8");
       let xmlAsObj = convertXMLFeedToObject(xmlContent);
 
-      let title = extractFeedTitleFromObj(xmlAsObj);
+      let title = extractTitleFromObj(xmlAsObj);
       expect(title).toEqual("Destination Linux");
 
       fullFilePath = testHelperGetFullFilePath("test_feed_self_hosted.xml");
       xmlContent = fs.readFileSync(fullFilePath, "utf8");
       xmlAsObj = convertXMLFeedToObject(xmlContent);
 
-      title = extractFeedTitleFromObj(xmlAsObj);
+      title = extractTitleFromObj(xmlAsObj);
       expect(title).toEqual("Self-Hosted");
 
       // safe when no title present
       xmlAsObj = convertXMLFeedToObject("");
 
-      title = extractFeedTitleFromObj(xmlAsObj);
+      title = extractTitleFromObj(xmlAsObj);
       expect(title).toEqual("");
     });
   });
