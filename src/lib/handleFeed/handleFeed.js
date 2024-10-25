@@ -1,4 +1,5 @@
-import { callFetch } from "../callFetch.js";
+import { callFetch } from "../callFetch/callFetch.js";
+import { XMLParser } from 'fast-xml-parser';
 
 /**
  * Fetches the feed at the url passed and returns the response body.
@@ -17,4 +18,30 @@ export async function fetchFeed(url) {
     console.error(error.message);
     return Promise.reject(error);
   }
+}
+
+/**
+ * 
+ */
+// export function parseFeed() {
+
+// }
+
+
+/**
+ * Convert xml rss / atom feed to a mess of json 
+ * 
+ * @param {*} xmlFeed 
+ */
+export function convertXMLFeedToObject(xmlFeed) {
+  if(!xmlFeed) {
+    return {}
+  }
+  const options = {
+    ignoreAttributes : false
+  };
+
+  const parser = new XMLParser(options);
+  const jsonObj = parser.parse(xmlFeed);
+  return jsonObj.rss && jsonObj.rss.channel ? jsonObj.rss.channel : {}
 }
