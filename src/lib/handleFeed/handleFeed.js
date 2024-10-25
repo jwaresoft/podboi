@@ -43,5 +43,37 @@ export function convertXMLFeedToObject(xmlFeed) {
 
   const parser = new XMLParser(options);
   const jsonObj = parser.parse(xmlFeed);
+
   return jsonObj.rss && jsonObj.rss.channel ? jsonObj.rss.channel : {}
+}
+
+/**
+ * extracts feed title if present
+ * 
+ * @param {*} feedObj 
+ * @returns 
+ */
+export function extractFeedTitleFromObj(feedObj) {
+  return feedObj && feedObj.title ? feedObj.title : ""
+}
+
+/**
+ * extracts feed image if present
+ * 
+ * @param {*} feedObj 
+ * @returns 
+ */
+export function extractImageUrlFromObj(feedObj) {
+  // return feedObj && feedObj.image && feedObj.image.url ? feedObj.image.url : ""
+  let imageUrl = ""
+  
+  if(feedObj && feedObj.image && feedObj.image.url) {
+    imageUrl = feedObj.image.url
+  } else if (feedObj && feedObj['itunes:image'] && feedObj['itunes:image']['@_href']) {
+    imageUrl = feedObj['itunes:image']['@_href']
+  } else if (feedObj && feedObj['podaccess:image'] && feedObj['podaccess:image']['#text']) {
+    imageUrl = feedObj['podaccess:image']['#text']
+  }
+
+  return imageUrl
 }

@@ -24,7 +24,8 @@
   "homepage": "https://github.com/jwaresoft/podboi#readme",
   "dependencies": {
     "commander": "^12.1.0",
-    "fast-xml-parser": "^4.5.0"
+    "fast-xml-parser": "^4.5.0",
+    "mp3tag.js": "^3.11.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
