@@ -2,7 +2,7 @@ import {
   convertXMLFeedToObject,
   extractImageUrlFromObj,
 } from "../handleFeed.js";
-import { testHelperGetFullFilePath } from "./__helpers__/testHelperGetFullFilePath.js";
+import { testHelperGetFullFilePath } from "../../__helpers__/testHelperGetFullFilePath.js";
 import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 

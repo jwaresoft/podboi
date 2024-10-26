@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { testHelperGetFullFilePath } from "./__helpers__/testHelperGetFullFilePath.js";
+import { testHelperGetFullFilePath } from "../../__helpers__/testHelperGetFullFilePath.js";
 import { convertXMLFeedToObject } from "../handleFeed.js";
 
 import { describe, it, expect } from "vitest";

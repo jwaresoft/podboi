@@ -89,6 +89,8 @@ export function extractMp3UrlFromObj(feedObj) {
     : "";
 }
 
+// TODO: extract description, sanitize description, getpublisheddate 
+
 // const feed =
 //   "https://www.patreon.com/rss/MurderXBryan?auth=LWwv4YQRCi6aVllJLs0EmgR-SinZj8sM";
 // const feedXML = await fetchFeed(feed);

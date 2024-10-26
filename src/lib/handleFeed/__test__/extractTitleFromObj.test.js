@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { testHelperGetFullFilePath } from "./__helpers__/testHelperGetFullFilePath.js";
+import { testHelperGetFullFilePath } from "../../__helpers__/testHelperGetFullFilePath.js";
 import { convertXMLFeedToObject, extractTitleFromObj } from "../handleFeed.js";
 
 import { describe, it, expect } from "vitest";
@@ -22,7 +22,6 @@ describe("extractTitleFromObj()", () => {
       expect(extractTitleFromObj(xmlAsObj)).toBeDefined()
       expect(typeof extractTitleFromObj(xmlAsObj)).toBe('string')
       expect(extractTitleFromObj(xmlAsObj).length).toBeGreaterThan(0)
-
     });
   });
 });
