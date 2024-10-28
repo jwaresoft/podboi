@@ -83,16 +83,110 @@ export function extractImageUrlFromObj(feedObj) {
  *
  * @param {*} feedObj
  */
-export function extractMp3UrlFromObj(feedObj) {
+export function parseMp3UrlFromObj(feedObj) {
   return feedObj && feedObj.enclosure && feedObj.enclosure["@_url"]
     ? feedObj.enclosure["@_url"]
     : "";
 }
 
-// TODO: extract description, sanitize description, getpublisheddate 
+/**
+ * 
+ */
+export function parseEpisodeDescription(feedObj) {
+  return feedObj && feedObj.description
+    ? feedObj.description
+    : "";
+}
 
-// const feed =
-//   "https://www.patreon.com/rss/MurderXBryan?auth=LWwv4YQRCi6aVllJLs0EmgR-SinZj8sM";
-// const feedXML = await fetchFeed(feed);
-// const feedJSON = convertXMLFeedToObject(feedXML);
-// console.log(feedJSON.item[0].enclosure);
+/**
+ * Removes html tags from description
+ * 
+ * @param {*} desc 
+ * @returns 
+ */
+export function sanatizeEpisodeDescription(desc) {
+  if(!desc || typeof desc !== 'string') {
+    return ""
+  }
+
+  return desc.replace(/<[^>]*>/g, '');
+}
+
+/**
+ * 
+ * @param {*} feedObj 
+ * @returns 
+ */
+export function parseDateFromEpisode(feedObj) {
+  const publishedDate = feedObj && feedObj.pubDate
+    ? feedObj.pubDate
+    : "";
+
+    if(publishedDate) {
+      return new Date(publishedDate)
+    } 
+
+    return undefined
+}
+
+/**
+ * 
+ * @param {*} episode 
+ * @param {*} defaultImage 
+ * @returns 
+ */
+export function parseEpisodeData(episode, defaultImage) {
+  const descriptionHtml = parseEpisodeDescription(episode) 
+  // return values
+  const dateObj = parseDateFromEpisode(episode)
+  const description = sanatizeEpisodeDescription(descriptionHtml)
+  const episodeImage = extractImageUrlFromObj(episode)
+  const mp3Url = parseMp3UrlFromObj(episode)
+  const title = extractTitleFromObj(episode)
+
+  return {
+    date: dateObj,
+    description: description,
+    image: episodeImage ? episodeImage : defaultImage,
+    mp3Url: mp3Url,
+    title: title
+  }
+}
+
+/**
+ * 
+ */
+export function parseFeedData(feedJSON) {
+  const title = extractTitleFromObj(feedJSON)
+  const feedImage =  extractImageUrlFromObj(feedJSON)
+
+  const episodes = feedJSON.item.map((episode) => {
+    return parseEpisodeData(episode, feedImage)
+  });
+
+  return {
+    title: title,
+    feedImage: feedImage,
+    episodes: episodes
+  }
+}
+
+
+// /////////////////////////////////////
+// import { testCases, testCaseLoadJSONasObject } from "../__fixtures__/testCases.js";
+
+// testCases.forEach((testcase) => {
+// const feed = testCaseLoadJSONasObject(testcase.jsonFixtureLocation)
+
+// const tc = parseFeedData(feed)
+
+// const val = { 
+//   title: tc.title,
+//   feedImage: tc.feedImage,
+//   latestEpisode: tc.episodes[0]
+// }
+
+// val.latestEpisode.rawDescription = parseEpisodeDescription(tc.episodes[0]) 
+
+// console.log(val)
+// })
