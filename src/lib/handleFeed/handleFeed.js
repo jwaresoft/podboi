@@ -170,23 +170,3 @@ export function parseFeedData(feedJSON) {
     episodes: episodes
   }
 }
-
-
-// /////////////////////////////////////
-// import { testCases, testCaseLoadJSONasObject } from "../__fixtures__/testCases.js";
-
-// testCases.forEach((testcase) => {
-// const feed = testCaseLoadJSONasObject(testcase.jsonFixtureLocation)
-
-// const tc = parseFeedData(feed)
-
-// const val = { 
-//   title: tc.title,
-//   feedImage: tc.feedImage,
-//   latestEpisode: tc.episodes[0]
-// }
-
-// val.latestEpisode.rawDescription = parseEpisodeDescription(tc.episodes[0]) 
-
-// console.log(val)
-// })
