@@ -6,12 +6,15 @@ import {
   extractTitleFromObj,
   extractImageUrlFromObj,
   parseEpisodeDescription,
-  sanatizeEpisodeDescription,
+  sanitizeEpisodeDescription,
   parseDateFromEpisode,
+  parseEpisodeData,
+  parseFeedData,
 } from "./handleFeed.js";
 import {
   testCases,
   testCaseLoadFixtureFile,
+  testCaseLoadJSONasObject,
 } from "../__fixtures__/testCases.js";
 
 vi.mock("../callFetch/callFetch.js", () => {
@@ -87,13 +90,52 @@ describe("handleFeed.js", () => {
         // this testing is weird as the unsanitized descriptions came out poorly for the test cases.
         const rawDescription = parseEpisodeDescription(episode);
         expect(rawDescription.length).toBeGreaterThan(0);
-        const sanitized = sanatizeEpisodeDescription(rawDescription);
+        const sanitized = sanitizeEpisodeDescription(rawDescription);
         expect(sanitized).toEqual(testEpisode.description);
 
         // episode published date
         const pubDate = parseDateFromEpisode(episode);
         const testDataDate = new Date(testEpisode.date);
         expect(pubDate).toEqual(testDataDate);
+      });
+    });
+  });
+  describe("parseEpisodeData()", () => {
+    it("should parse data when present from episode", () => {
+      testCases.forEach((testCaseObj) => {
+        const feedJSON = testCaseLoadJSONasObject(
+          testCaseObj.jsonFixtureLocation
+        );
+
+        const parsedEpisode = parseEpisodeData(feedJSON.item[0], "");
+        const latestEpisode = testCaseObj.testData.latestEpisode;
+
+        expect(parsedEpisode.title).toEqual(latestEpisode.title);
+        expect(parsedEpisode.date).toEqual(new Date(latestEpisode.date));
+        expect(parsedEpisode.description).toEqual(latestEpisode.description);
+
+        expect(parsedEpisode.mp3Url).toEqual(latestEpisode.mp3Url);
+      });
+    });
+    // add test for handling default image
+    it("should parse feed data", () => {
+      testCases.forEach((testCaseObj) => {
+        const feedJSON = testCaseLoadJSONasObject(
+          testCaseObj.jsonFixtureLocation
+        );
+
+        const parsedFeed = parseFeedData(feedJSON);
+        const parsedFeedLatest = parsedFeed.episodes[0];
+        const latestEpisode = testCaseObj.testData.latestEpisode;
+        const latestEpisodeImage = testCaseObj.testData.latestEpisode.image
+          ? testCaseObj.testData.latestEpisode.image
+          : testCaseObj.testData.feedImage;
+
+        expect(parsedFeedLatest.title).toEqual(latestEpisode.title);
+        expect(parsedFeedLatest.date).toEqual(new Date(latestEpisode.date));
+        expect(parsedFeedLatest.description).toEqual(latestEpisode.description);
+        expect(parsedFeedLatest.image).toEqual(latestEpisodeImage);
+        expect(parsedFeedLatest.mp3Url).toEqual(latestEpisode.mp3Url);
       });
     });
   });

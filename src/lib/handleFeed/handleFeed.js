@@ -104,7 +104,7 @@ export function parseEpisodeDescription(feedObj) {
  * @param {*} desc 
  * @returns 
  */
-export function sanatizeEpisodeDescription(desc) {
+export function sanitizeEpisodeDescription(desc) {
   if(!desc || typeof desc !== 'string') {
     return ""
   }
@@ -139,7 +139,7 @@ export function parseEpisodeData(episode, defaultImage) {
   const descriptionHtml = parseEpisodeDescription(episode) 
   // return values
   const dateObj = parseDateFromEpisode(episode)
-  const description = sanatizeEpisodeDescription(descriptionHtml)
+  const description = sanitizeEpisodeDescription(descriptionHtml)
   const episodeImage = extractImageUrlFromObj(episode)
   const mp3Url = parseMp3UrlFromObj(episode)
   const title = extractTitleFromObj(episode)
