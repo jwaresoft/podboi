@@ -117,25 +117,39 @@ describe("handleFeed.js", () => {
         expect(parsedEpisode.mp3Url).toEqual(latestEpisode.mp3Url);
       });
     });
-    // add test for handling default image
-    it("should parse feed data", () => {
-      testCases.forEach((testCaseObj) => {
-        const feedJSON = testCaseLoadJSONasObject(
-          testCaseObj.jsonFixtureLocation
-        );
+    it('should return the episode image when present, and the default if not', () => {
+      const feedImage = "the feed image"
+      const parsedEpisode = parseEpisodeData({}, feedImage);
 
-        const parsedFeed = parseFeedData(feedJSON);
-        const parsedFeedLatest = parsedFeed.episodes[0];
-        const latestEpisode = testCaseObj.testData.latestEpisode;
-        const latestEpisodeImage = testCaseObj.testData.latestEpisode.image
-          ? testCaseObj.testData.latestEpisode.image
-          : testCaseObj.testData.feedImage;
+      expect(parsedEpisode.image).toEqual(feedImage)
+    })
+    describe("parseFeedData()", () => {
+      it("should parse feed data", () => {
+        testCases.forEach((testCaseObj) => {
+          const feedJSON = testCaseLoadJSONasObject(
+            testCaseObj.jsonFixtureLocation
+          );
 
-        expect(parsedFeedLatest.title).toEqual(latestEpisode.title);
-        expect(parsedFeedLatest.date).toEqual(new Date(latestEpisode.date));
-        expect(parsedFeedLatest.description).toEqual(latestEpisode.description);
-        expect(parsedFeedLatest.image).toEqual(latestEpisodeImage);
-        expect(parsedFeedLatest.mp3Url).toEqual(latestEpisode.mp3Url);
+          const parsedFeed = parseFeedData(feedJSON);
+          const parsedFeedLatest = parsedFeed.episodes[0];
+          const latestEpisode = testCaseObj.testData.latestEpisode;
+          const latestEpisodeImage = testCaseObj.testData.latestEpisode.image
+            ? testCaseObj.testData.latestEpisode.image
+            : testCaseObj.testData.feedImage;
+
+          // feed data
+          expect(parsedFeed.title).toEqual(testCaseObj.testData.title)
+          expect(parsedFeed.feedImage).toEqual(testCaseObj.testData.feedImage)
+
+
+          expect(parsedFeedLatest.title).toEqual(latestEpisode.title);
+          expect(parsedFeedLatest.date).toEqual(new Date(latestEpisode.date));
+          expect(parsedFeedLatest.description).toEqual(
+            latestEpisode.description
+          );
+          expect(parsedFeedLatest.image).toEqual(latestEpisodeImage);
+          expect(parsedFeedLatest.mp3Url).toEqual(latestEpisode.mp3Url);
+        });
       });
     });
   });
