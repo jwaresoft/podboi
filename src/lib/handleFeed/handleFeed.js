@@ -5,6 +5,7 @@ import { XMLParser } from "fast-xml-parser";
  * Fetches the feed at the url passed and returns the response body.
  *
  * @param {string} url
+ * @returns {string} 
  */
 export async function fetchFeed(url) {
   try {
@@ -23,7 +24,8 @@ export async function fetchFeed(url) {
 /**
  * Convert xml rss / atom feed to a mess of json
  *
- * @param {*} xmlFeed
+ * @param {string} xmlFeed
+ * @returns {string} 
  */
 export function convertXMLFeedToObject(xmlFeed) {
   if (!xmlFeed) {
@@ -42,8 +44,8 @@ export function convertXMLFeedToObject(xmlFeed) {
 /**
  * extracts feed title if present
  *
- * @param {*} feedObj
- * @returns
+ * @param {string} xmlFeed
+ * @returns {string} 
  */
 export function extractTitleFromObj(feedObj) {
   return feedObj && feedObj.title ? feedObj.title : "";
@@ -52,8 +54,8 @@ export function extractTitleFromObj(feedObj) {
 /**
  * extracts feed image if present
  *
- * @param {*} feedObj
- * @returns
+ * @param {Object} feedObj
+ * @returns {string}
  */
 export function extractImageUrlFromObj(feedObj) {
   // return feedObj && feedObj.image && feedObj.image.url ? feedObj.image.url : ""
@@ -81,7 +83,8 @@ export function extractImageUrlFromObj(feedObj) {
 /**
  * extracts mp3 url from episode object
  *
- * @param {*} feedObj
+ * @param {Object} feedObj
+ * @returns {string}
  */
 export function parseMp3UrlFromObj(feedObj) {
   return feedObj && feedObj.enclosure && feedObj.enclosure["@_url"]
@@ -90,7 +93,10 @@ export function parseMp3UrlFromObj(feedObj) {
 }
 
 /**
+ * parses the episode description as is, leaving embedded html
  * 
+ * @param {Object} feedObj
+ * @return {string}
  */
 export function parseEpisodeDescription(feedObj) {
   return feedObj && feedObj.description
@@ -99,10 +105,10 @@ export function parseEpisodeDescription(feedObj) {
 }
 
 /**
- * Removes html tags from description
+ * Removes html tags from description (or any other string if need be)
  * 
- * @param {*} desc 
- * @returns 
+ * @param {string} desc 
+ * @returns {string}
  */
 export function sanitizeEpisodeDescription(desc) {
   if(!desc || typeof desc !== 'string') {
@@ -113,9 +119,10 @@ export function sanitizeEpisodeDescription(desc) {
 }
 
 /**
+ * parses date string and returns date object for published date
  * 
- * @param {*} feedObj 
- * @returns 
+ * @param {Object} feedObj
+ * @returns {Date}
  */
 export function parseDateFromEpisode(feedObj) {
   const publishedDate = feedObj && feedObj.pubDate
@@ -130,10 +137,12 @@ export function parseDateFromEpisode(feedObj) {
 }
 
 /**
+ * Parses episode image if it exists, returns passed default image if not.  Should pass feed image
+ * in to handle defaults
  * 
- * @param {*} episode 
- * @param {*} defaultImage 
- * @returns 
+ * @param {Object} episode 
+ * @param {string} defaultImage 
+ * @returns {string}
  */
 export function parseEpisodeData(episode, defaultImage) {
   const descriptionHtml = parseEpisodeDescription(episode) 
@@ -154,7 +163,12 @@ export function parseEpisodeData(episode, defaultImage) {
 }
 
 /**
+ * Calls all data extractors and returns feed info needed to download feed.  Should pass default
+ * image if present.
  * 
+ * @param {Object} feedJSON - feed as json
+ * @returns {Object}
+ *
  */
 export function parseFeedData(feedJSON) {
   const title = extractTitleFromObj(feedJSON)
