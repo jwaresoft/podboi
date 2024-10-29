@@ -58,7 +58,6 @@ export function extractTitleFromObj(feedObj) {
  * @returns {string}
  */
 export function extractImageUrlFromObj(feedObj) {
-  // return feedObj && feedObj.image && feedObj.image.url ? feedObj.image.url : ""
   let imageUrl = "";
 
   if (feedObj && feedObj.image && feedObj.image.url) {
@@ -184,3 +183,4 @@ export function parseFeedData(feedJSON) {
     episodes: episodes
   }
 }
+

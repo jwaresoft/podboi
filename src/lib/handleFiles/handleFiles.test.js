@@ -1,9 +1,15 @@
 import { describe, vi, it, expect } from "vitest";
-import { handleFileOpen, handlePlainTextFile, handleCSV } from "./handleFiles";
+import {
+  handleFileOpen,
+  handlePlainTextFile,
+  handleCSV,
+  scrubOriginalFileName,
+} from "./handleFiles";
 import { readFileSync } from "node:fs";
 
 vi.mock("node:fs", () => ({
   readFileSync: vi.fn(),
+  writeFileSync: vi.fn(),
 }));
 
 describe("handleFiles.js", () => {
@@ -33,26 +39,33 @@ describe("handleFiles.js", () => {
       });
 
       const text = handlePlainTextFile("/path/to/textFile.txt");
-      expect(text[0]).toEqual("One")
-      expect(text[1]).toEqual("Two")
-      expect(text[2]).toEqual("Three")
+      expect(text[0]).toEqual("One");
+      expect(text[1]).toEqual("Two");
+      expect(text[2]).toEqual("Three");
     });
   });
-  describe('handleCSV', () => {
-    it('should return the first column of the csv only as an array', () => {
-        const mockTextFile = `One,A\nTwo,B\nThree,C,D,E`;
-        vi.mocked(readFileSync).mockImplementation(() => {
-          return mockTextFile;
-        });
-  
-        const text = handleCSV("/path/to/csv.csv");
-        expect(text[0]).toEqual("One")
-        expect(text[1]).toEqual("Two")
-        expect(text[2]).toEqual("Three")
+  describe("handleCSV()", () => {
+    it("should return the first column of the csv only as an array", () => {
+      const mockTextFile = `One,A\nTwo,B\nThree,C,D,E`;
+      vi.mocked(readFileSync).mockImplementation(() => {
+        return mockTextFile;
+      });
 
-        text.forEach(element => {
-            expect(Array.isArray(element)).toBe(false)
-        });
+      const text = handleCSV("/path/to/csv.csv");
+      expect(text[0]).toEqual("One");
+      expect(text[1]).toEqual("Two");
+      expect(text[2]).toEqual("Three");
+
+      text.forEach((element) => {
+        expect(Array.isArray(element)).toBe(false);
+      });
+    });
+  });
+  describe('scrubOriginalFileName', () => {
+    it('should remove unsafe characters /, *,\\ and others', () => {
+      const badString = "hel****lo//\\/.txt**"
+      const safe = scrubOriginalFileName(badString)
+      expect(safe).toEqual('hello.txt')
     })
   })
 });

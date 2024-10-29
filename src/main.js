@@ -2,8 +2,6 @@
 import { Command } from "commander";
 const program = new Command();
 
-let feedPath;
-
 program
   .name("podboi")
   .description(
