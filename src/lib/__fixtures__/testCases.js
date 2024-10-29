@@ -1,6 +1,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
+import fs from "node:fs";
 
 const fileFullPath = fileURLToPath(import.meta.url);
 const pathToHere = path.dirname(fileFullPath);
