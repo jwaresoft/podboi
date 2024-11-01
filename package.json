@@ -1,6 +1,6 @@
 {
   "name": "podboi",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Bulk download and tag podcast feeds!",
   "type": "module",
   "scripts": {
