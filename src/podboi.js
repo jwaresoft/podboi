@@ -25,6 +25,7 @@ export async function handlePassedParamsAndRun(feedParam, destinationParam) {
     console.warning(
       `WARNING: {destinationParam} does not exist.  Pass a Directory which exists.`
     );
+    process.exit(0)
   }
 
   if (isUrl(feedParam)) {

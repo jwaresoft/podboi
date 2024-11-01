@@ -7,7 +7,7 @@ export default defineConfig({
     globals: false, 
     coverage: {
       reporter: ["text"], 
-      exclude: ['./testSetup', './src/lib/__fixtures__'],
+      exclude: ['**/*.js', '!src/**/*.js', 'src/lib/__fixtures__/**/*.js', './src/lib/callFetch/callFetch.js'],
     },
   },
 });

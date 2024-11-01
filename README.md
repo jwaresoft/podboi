@@ -1,6 +1,8 @@
 # podboi
 
-A simple cli for bulk downloading entire podcast feeds.  Podboi also adds episode art and description as Id3 tags.
+A simple cli for bulk downloading entire podcast feeds.  ~~Podboi also adds episode art and description as Id3 tags~~ (in progress).
+
+I wrote this for myself and thought I would share in the event anyone else finds it useful
 
 ## Install
 
@@ -8,7 +10,28 @@ Here are a few ways to install podboi.  Pick the one that you like the best.
 
 ### npm / nodejs
 
-coming soon
+1. [Download and Install](https://nodejs.org/) node.js or [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and install it with nvm.  You should install the **latest lts** of node.
+2. run `npm install`
+3. from this project folder, run `npm i -g` .
+
+## Usage
+
+from `podboi --help`
+
+```
+Usage: podboi [options]
+
+podcast bulk downloader.  Adds images and description (and more) as id3 tags.
+
+Options:
+  -V, --version               output the version number
+  -o, --out <dir>             output directory.  Defaults to current working directory.
+  -f, --feed <url, csv, txt>  the feed url, or a file containing feed urls  Feed files should be a
+                              csv with the first column containing the feed url, or a plaintext
+                              file with each feed seperated by a new line.
+  -h, --help                  display help for command
+```
+
 
 ## Setup For Development
 
@@ -17,10 +40,11 @@ coming soon
 1. [Download and Install](https://nodejs.org/) node.js or [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and install it with nvm.  You should install the **latest lts** of node.
 2. run `npm install`
 
-### With Docker 
+### With Docker / Podman
 
-coming soon
+coming soon (maybe)
 
+* Podman is an [unrelated project from Redhat](https://podman.io/).
 
 ## Credits
 
