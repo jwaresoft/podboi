@@ -10,16 +10,6 @@ Here are a few ways to install podboi.  Pick the one that you like the best.
 
 coming soon
 
-### Docker
-
-coming soon
-
-### Podman
-
-coming soon
-
-*Podman is an [unrelated project from Redhat](https://podman.io/).
-
 ## Setup For Development
 
 ### Traditional Git Checkout

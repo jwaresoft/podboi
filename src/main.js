@@ -27,8 +27,8 @@ program
 
 program.parse()
 
-const options = program.opts()
-const outDir = options.out ? options.out : process.cwd()
-const feed = options.feed
+// const options = program.opts()
+// const outDir = options.out ? options.out : process.cwd()
+// const feed = options.feed
 
 // TODO: run functions here

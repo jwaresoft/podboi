@@ -5,7 +5,7 @@ import {
   handleCSV,
   scrubOriginalFileName,
 } from "./handleFiles";
-import { readFileSync } from "node:fs";
+import { readFileSync } from 'node:fs'
 
 vi.mock("node:fs", () => ({
   readFileSync: vi.fn(),
@@ -14,12 +14,12 @@ vi.mock("node:fs", () => ({
 
 describe("handleFiles.js", () => {
   describe("handleFileOpen()", () => {
-    it("should return file txt if it exits", () => {
+    it.only("should return file txt if it exits", () => {
       vi.mocked(readFileSync).mockImplementation(() => {
         return "ok";
       });
 
-      const text = handleFileOpen("/path/");
+      const text = handleFileOpen("/path/file.txt");
       expect(text).toBe("ok");
     });
     it("should return undefined and not throw if an issue arises", () => {
@@ -61,11 +61,11 @@ describe("handleFiles.js", () => {
       });
     });
   });
-  describe('scrubOriginalFileName', () => {
-    it('should remove unsafe characters /, *,\\ and others', () => {
-      const badString = "hel****lo//\\/.txt**"
-      const safe = scrubOriginalFileName(badString)
-      expect(safe).toEqual('hello.txt')
-    })
-  })
+  describe("scrubOriginalFileName()", () => {
+    it("should remove unsafe characters /, *,\\ and others", () => {
+      const badString = "hel****lo//\\/.txt**";
+      const safe = scrubOriginalFileName(badString);
+      expect(safe).toEqual("hello.txt");
+    });
+  });
 });

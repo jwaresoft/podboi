@@ -1,5 +1,4 @@
 import { existsSync } from "node:fs";
-import fs from "fs";
 import path from "path";
 import { isUrl } from "./lib/isUrl/isUrl.js";
 import {
@@ -11,7 +10,8 @@ import {
   handleCSV,
   handlePlainTextFile,
   downloadFile,
-  scrubOriginalFileName
+  scrubOriginalFileName,
+  handleFeedDirectory
 } from "./lib/handleFiles/handleFiles.js";
 
 /**
@@ -22,27 +22,34 @@ import {
 export async function handlePassedParamsAndRun(feedParam, destinationParam) {
   // check our values
   if (!existsSync(destinationParam)) {
-    console.log(
-      `{destinationParam} does not exist.  Pass a Directory which exists.`
+    console.warning(
+      `WARNING: {destinationParam} does not exist.  Pass a Directory which exists.`
     );
   }
 
   if (isUrl(feedParam)) {
     await downloadPodcastFeed(feedParam, destinationParam);
   } else {
+    // get file extension and see if it is a csv or plaintext file
     const fileExtension = feedParam.split(".").pop().toLowerCase();
     const feeds =
       fileExtension === "csv"
         ? handleCSV(feedParam)
         : handlePlainTextFile(feedParam);
-    feeds.forEach(async (element) => {
-      await downloadPodcastFeed(element, destinationParam);
-    });
+    for(let i = 0 ; i < feeds.length; i++) {
+      const currentFeed = feeds[i]
+      if(currentFeed) {
+        await downloadPodcastFeed(currentFeed, destinationParam);
+      } else {
+        console.warn("SKIPPING: blank line in feed file")
+      }
+    }
   }
 }
 
 /**
- *
+ * Download all episodes of a podcast feed to the target destination. 
+ * 
  * @param {*} feed
  * @param {*} destination
  */
@@ -54,24 +61,15 @@ export async function downloadPodcastFeed(feed, destination) {
   const safeFeedName = scrubOriginalFileName(feedData.title)
   const feedDirectory = path.join(destination, safeFeedName);
 
-  // TODO: REFACTOR -- check for and create directory
-  if (!existsSync(feedDirectory)) {
-    try {
-      fs.mkdir(feedDirectory, (e) => {
-        if (e) {
-          console.error(e.message);
-          return;
-        }
-        console.log(`successfully created ${feedDirectory}`);
-      });
-    } catch (error) {
-      console.error(error.message);
-      return;
-    }
-  } else {
+  // check for directory and attempt to create if possible
+  if(handleFeedDirectory(feedDirectory)) {
     console.log(`downloading ${safeFeedName} into ${feedDirectory}`);
+  } else {
+    console.error('could not find or create directory')
+    return false
   }
-
+  
+  // 
   for (let i = 0; i < feedData.episodes.length; i++) {
     const episode = feedData.episodes[i]
     const safeTitle = `${scrubOriginalFileName(episode.title)}.mp3`
@@ -82,6 +80,6 @@ export async function downloadPodcastFeed(feed, destination) {
       console.log("DOWNLOADING: " + safeTitle)
       await downloadFile(episode.mp3Url, destinationFile)
     }
-
   }
+
 }

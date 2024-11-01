@@ -1,8 +1,6 @@
-import { readFileSync, createWriteStream } from "node:fs";
+import { readFileSync, createWriteStream, existsSync, mkdir } from "node:fs";
 import Papa from "papaparse";
 import { callFetch } from "../callFetch/callFetch.js";
-import { Readable } from "node:stream";
-import { pipeline } from "node:stream/promises";
 
 export function handleCSV(filePath) {
   let feedFile = handleFileOpen(filePath);
@@ -52,24 +50,53 @@ export function handleFileOpen(filePath) {
  * @returns {boolean}
  */
 export async function downloadFile(url, destination) {
-  const response = await callFetch(url)
-  const reader = response.body.getReader()
-  const writer = createWriteStream(destination)
+  const response = await callFetch(url);
+  const reader = response.body.getReader();
+  const writer = createWriteStream(destination);
 
-  while(true) {
-    // done is true for the last chunk
-    // value is Uint8Array of the chunk bytes
-    const {done, value} = await reader.read();
-  
+  while (true) {
+    const { done, value } = await reader.read();
+
     if (done) {
-      
       break;
     }
-  
-    writer.write(value)
+
+    writer.write(value);
   }
 }
 
+/**
+ * Remove characters which are not alphanumeric, or spaces to avoid filesystem issues
+ *
+ * @param {*} ogFileName
+ * @returns
+ */
 export function scrubOriginalFileName(ogFileName) {
-  return ogFileName.replace(/([^a-z0-9. ]+)/gi, '');
+  return ogFileName.replace(/([^a-z0-9. ]+)/gi, "");
+}
+
+/**
+ * Check for feed directory, and create it if it doesnt exist
+ *
+ * @param {*} feedDirectory
+ * @returns
+ */
+export function handleFeedDirectory(feedDirectory) {
+  if (!existsSync(feedDirectory)) {
+    try {
+      mkdir(feedDirectory, (e) => {
+        if (e) {
+          console.error(e.message);
+          return false;
+        }
+        console.log(`successfully created ${feedDirectory}`);
+        return true;
+      });
+    } catch (error) {
+      console.error(error.message);
+      return;
+    }
+  } else {
+    return true;
+  }
 }
