@@ -1,4 +1,9 @@
-import { readFileSync, createWriteStream, existsSync, mkdir } from "node:fs";
+import {
+  readFileSync,
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+} from "node:fs";
 import Papa from "papaparse";
 import { callFetch } from "../callFetch/callFetch.js";
 
@@ -84,17 +89,17 @@ export function scrubOriginalFileName(ogFileName) {
 export function handleFeedDirectory(feedDirectory) {
   if (!existsSync(feedDirectory)) {
     try {
-      mkdir(feedDirectory, (e) => {
+      mkdirSync(feedDirectory, (e) => {
         if (e) {
           console.error(e.message);
           return false;
         }
-        console.log(`successfully created ${feedDirectory}`);
-        return true;
       });
+      console.log(`successfully created ${feedDirectory}`);
+      return true;
     } catch (error) {
       console.error(error.message);
-      return;
+      return false;
     }
   } else {
     return true;
