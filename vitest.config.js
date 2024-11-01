@@ -7,6 +7,7 @@ export default defineConfig({
     globals: false, 
     coverage: {
       reporter: ["text"], 
+      exclude: ['./testSetup', './src/lib/__fixtures__'],
     },
   },
 });
