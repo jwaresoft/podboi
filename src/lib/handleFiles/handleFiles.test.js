@@ -14,7 +14,7 @@ vi.mock("node:fs", () => ({
 
 describe("handleFiles.js", () => {
   describe("handleFileOpen()", () => {
-    it.only("should return file txt if it exits", () => {
+    it("should return file txt if it exits", () => {
       vi.mocked(readFileSync).mockImplementation(() => {
         return "ok";
       });
