@@ -107,7 +107,7 @@ describe("handleFeed.js", () => {
           testCaseObj.jsonFixtureLocation
         );
 
-        const parsedEpisode = parseEpisodeData(feedJSON.item[0], "");
+        const parsedEpisode = parseEpisodeData(feedJSON.item[0], "", feedJSON.title);
         const latestEpisode = testCaseObj.testData.latestEpisode;
 
         expect(parsedEpisode.title).toEqual(latestEpisode.title);
@@ -115,6 +115,7 @@ describe("handleFeed.js", () => {
         expect(parsedEpisode.description).toEqual(latestEpisode.description);
 
         expect(parsedEpisode.mp3Url).toEqual(latestEpisode.mp3Url);
+        expect(parsedEpisode.feedName).toEqual(feedJSON.title)
       });
     });
     it('should return the episode image when present, and the default if not', () => {
@@ -149,6 +150,8 @@ describe("handleFeed.js", () => {
           );
           expect(parsedFeedLatest.image).toEqual(latestEpisodeImage);
           expect(parsedFeedLatest.mp3Url).toEqual(latestEpisode.mp3Url);
+          expect(parsedFeedLatest.feedName).toEqual(parsedFeed.title);
+
         });
       });
     });

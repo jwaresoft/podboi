@@ -143,7 +143,7 @@ export function parseDateFromEpisode(feedObj) {
  * @param {string} defaultImage 
  * @returns {string}
  */
-export function parseEpisodeData(episode, defaultImage) {
+export function parseEpisodeData(episode, defaultImage, safeFeedName) {
   const descriptionHtml = parseEpisodeDescription(episode) 
   // return values
   const dateObj = parseDateFromEpisode(episode)
@@ -157,7 +157,9 @@ export function parseEpisodeData(episode, defaultImage) {
     description: description,
     image: episodeImage ? episodeImage : defaultImage,
     mp3Url: mp3Url,
-    title: title
+    title: title,
+    fallBackImage: defaultImage,
+    feedName: safeFeedName
   }
 }
 
@@ -174,7 +176,7 @@ export function parseFeedData(feedJSON) {
   const feedImage =  extractImageUrlFromObj(feedJSON)
 
   const episodes = feedJSON.item.map((episode) => {
-    return parseEpisodeData(episode, feedImage)
+    return parseEpisodeData(episode, feedImage, title)
   });
 
   return {
