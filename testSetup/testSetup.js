@@ -28,9 +28,9 @@ export function setup() {
 /**
  * remove test dir to not break consecutive tests runs
  */
-export function teardown() {
-  if(existsSync(tempDestination)) {
-    rmSync(tempDestination ,{ recursive: true })
-    console.log("removed old test files")
-  }
-}
+// export function teardown() {
+//   if(existsSync(tempDestination)) {
+//     rmSync(tempDestination ,{ recursive: true })
+//     console.log("removed old test files")
+//   }
+// }

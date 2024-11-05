@@ -11,8 +11,9 @@ import {
   handlePlainTextFile,
   downloadFile,
   scrubOriginalFileName,
-  handleFeedDirectory
+  handleFeedDirectory,
 } from "./lib/handleFiles/handleFiles.js";
+import {  tagPodcastEpisode } from './lib/tagFile/tagFile.js'
 
 /**
  *
@@ -80,6 +81,13 @@ export async function downloadPodcastFeed(feed, destination) {
     } else {
       console.log("DOWNLOADING: " + safeTitle)
       await downloadFile(episode.mp3Url, destinationFile)
+
+      try {
+        await tagPodcastEpisode(destinationFile, episode)
+      } catch (error) {
+        console.error(error)
+        return
+      }
     }
   }
 

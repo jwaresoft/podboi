@@ -6,10 +6,11 @@ import {
   scrubOriginalFileName,
   handleFeedDirectory,
   downloadFile,
+  downloadFileToMemory
 } from "./handleFiles";
 import path from "node:path";
 import { tmpdir } from "os";
-import { existsSync, statSync, createReadStream } from "node:fs";
+import { existsSync, statSync, createReadStream, readFileSync } from "node:fs";
 import { callFetch } from "../callFetch/callFetch.js";
 import { Readable } from "node:stream";
 
@@ -89,24 +90,42 @@ describe("handleFiles.js", () => {
       );
 
       let testStream = createReadStream(testFile, { encoding: "binary" });
-      testStream = Readable.toWeb(testStream)
+      testStream = Readable.toWeb(testStream);
 
       vi.mocked(callFetch).mockImplementation(() => {
         return {
           ok: true,
-          body: testStream
+          body: testStream,
         };
       });
 
-      expect(existsSync(testDownloadFile)).toBe(false)
+      expect(existsSync(testDownloadFile)).toBe(false);
 
-      await downloadFile('', testDownloadFile)
+      await downloadFile("", testDownloadFile);
 
-      expect(existsSync(testDownloadFile)).toBe(true)
-      const testFileStats = statSync(testFile)
-      const testDownloadFileStats = statSync(testDownloadFile)
+      expect(existsSync(testDownloadFile)).toBe(true);
+      const testFileStats = statSync(testFile);
+      const testDownloadFileStats = statSync(testDownloadFile);
 
-      expect(testFileStats.size).not.toEqual(testDownloadFileStats.size)
+      expect(testFileStats.size).toBeLessThanOrEqual(testDownloadFileStats.size);
+    });
+  });
+  describe("downloadFileToMemory()", () => {
+    it("should handle ", async () => {
+      const testFileName = path.join(tempDestination, "test-image.jpg");
+      const testFile = readFileSync(testFileName)
+
+      const returnBuffer = testFile.buffer;
+
+      vi.mocked(callFetch).mockImplementation(() => {
+        return {
+          ok: true,
+          arrayBuffer: async () => {return Promise.resolve(returnBuffer)}
+        };
+      });
+
+      const mockImg = await downloadFileToMemory()
+      expect(mockImg.byteLength).toEqual(testFile.buffer.byteLength)
     });
   });
 });

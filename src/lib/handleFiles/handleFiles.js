@@ -105,3 +105,24 @@ export function handleFeedDirectory(feedDirectory) {
     return true;
   }
 }
+
+/**
+ * Downloads a file to memory and returns an array buffer.  This is used to download images for tags.
+ * 
+ * @param {string} url
+ * @returns
+ */
+export async function downloadFileToMemory(url) {
+  try {
+    const response = await callFetch(url);
+    if (!response.ok) {
+      throw new Error("Failed to download image");
+    }
+
+    const imageBuffer = await response.arrayBuffer()
+    return imageBuffer;
+  } catch (error) {
+    console.error("Error downloading image:", error);
+    return;
+  }
+}
