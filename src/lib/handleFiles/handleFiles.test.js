@@ -111,7 +111,7 @@ describe("handleFiles.js", () => {
     });
   });
   describe("downloadFileToMemory()", () => {
-    it("should handle ", async () => {
+    it("should handle downloading a file to memory", async () => {
       const testFileName = path.join(tempDestination, "test-image.jpg");
       const testFile = readFileSync(testFileName)
 
