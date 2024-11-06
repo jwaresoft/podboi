@@ -1,6 +1,6 @@
 # podboi
 
-A simple cli for bulk downloading entire podcast feeds.  ~~Podboi also adds episode art and description as Id3 tags~~ (in progress).
+A simple cli for bulk downloading entire podcast feeds.  Podboi also adds episode art and description as Id3 tags.
 
 I wrote this for myself and thought I would share in the event anyone else finds it useful
 
