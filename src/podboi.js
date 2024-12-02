@@ -45,7 +45,7 @@ export async function handlePassedParamsAndRun(
     for (let i = 0; i < feeds.length; i++) {
       const currentFeed = feeds[i];
       if (currentFeed) {
-        await downloadPodcastFeed(currentFeed, destinationParam);
+        await downloadPodcastFeed(currentFeed, destinationParam, additionalOptions);
       } else {
         console.warn("SKIPPING: blank line in feed file");
       }
