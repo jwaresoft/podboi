@@ -26,6 +26,7 @@ podcast bulk downloader.  Adds images and description (and more) as id3 tags.
 Options:
   -V, --version               output the version number
   -o, --out <dir>             output directory.  Defaults to current working directory.
+  -d, --date                  append the published date to the file name
   -f, --feed <url, csv, txt>  the feed url, or a file containing feed urls  Feed files should be a
                               csv with the first column containing the feed url, or a plaintext
                               file with each feed seperated by a new line.
@@ -39,12 +40,6 @@ Options:
 
 1. [Download and Install](https://nodejs.org/) node.js or [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and install it with nvm.  You should install the **latest lts** of node.
 2. run `npm install`
-
-### With Docker / Podman
-
-coming soon (maybe)
-
-* Podman is an [unrelated project from Redhat](https://podman.io/).
 
 ## Credits
 
