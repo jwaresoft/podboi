@@ -35,7 +35,7 @@ program.parse()
 
 const options = program.opts()
 const outDir = options.out ? options.out : process.cwd()
-const addDateToFileName = options.date ? true : false
 const feed = options.feed
+const additionalOptions = {addDateToFileName: options.date ? true : false}
 
-handlePassedParamsAndRun(feed, outDir, {addDateToFileName: addDateToFileName})
+handlePassedParamsAndRun(feed, outDir, additionalOptions)

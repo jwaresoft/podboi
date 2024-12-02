@@ -87,11 +87,11 @@ export async function downloadPodcastFeed(
     const episode = feedData.episodes[i];
     const safeTitle = `${scrubOriginalFileName(episode.title)}.mp3`;
     const formattedDate = episode.date
-      ? `${episode.date.getFullYear()}-${episode.date.getMonth()}-${episode.date.getDate()}}_`
+      ? `${episode.date.getFullYear()}-${episode.date.getMonth()}-${episode.date.getDate()}_`
       : "";
     const fileName = additionalOptions.addDateToFileName
-      ? safeTitle
-      : `${formattedDate}${safeTitle}`;
+      ? `${formattedDate}${safeTitle}`
+      : safeTitle
 
     const destinationFile = path.join(feedDirectory, fileName);
     if (existsSync(destinationFile)) {
