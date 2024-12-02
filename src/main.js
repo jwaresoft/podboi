@@ -20,6 +20,10 @@ program
     "-o, --out <dir>",
     "output directory.  Defaults to current working directory."
   )
+  .option(
+    '-d, --date',
+    'append the published date to the file name'
+  )
   .requiredOption(
     "-f, --feed <url, csv, txt>",
     "the feed url, or a file containing feed urls" +
@@ -31,6 +35,7 @@ program.parse()
 
 const options = program.opts()
 const outDir = options.out ? options.out : process.cwd()
+const addDateToFileName = options.date ? true : false
 const feed = options.feed
 
-handlePassedParamsAndRun(feed, outDir)
+handlePassedParamsAndRun(feed, outDir, {addDateToFileName: addDateToFileName})
