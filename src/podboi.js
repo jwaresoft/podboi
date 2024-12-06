@@ -12,6 +12,7 @@ import {
   downloadFile,
   scrubOriginalFileName,
   handleFeedDirectory,
+  formatDateForFileName
 } from "./lib/handleFiles/handleFiles.js";
 import { tagPodcastEpisode } from "./lib/tagFile/tagFile.js";
 
@@ -86,9 +87,7 @@ export async function downloadPodcastFeed(
   for (let i = 0; i < feedData.episodes.length; i++) {
     const episode = feedData.episodes[i];
     const safeTitle = `${scrubOriginalFileName(episode.title)}.mp3`;
-    const formattedDate = episode.date
-      ? `${episode.date.getFullYear()}-${episode.date.getMonth()}-${episode.date.getDate()}_`
-      : "";
+    const formattedDate = formatDateForFileName(episode.date)
     const fileName = additionalOptions.addDateToFileName
       ? `${formattedDate}${safeTitle}`
       : safeTitle

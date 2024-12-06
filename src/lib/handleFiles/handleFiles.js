@@ -126,3 +126,22 @@ export async function downloadFileToMemory(url) {
     return;
   }
 }
+
+/**
+ * Returns a string of the date for adding published date to the filename since 
+ * javascript doesnt have strftime style string formatting
+ * 
+ * @param {Date} date 
+ * @returns 
+ */
+export function formatDateForFileName(date) {
+  if(date && typeof date.getMonth === 'function' ) {
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, "0")
+    const day = date.getDate().toString().padStart(2, "0")
+
+    return `${year}-${month}-${day}__`
+  }
+
+  return ""
+}

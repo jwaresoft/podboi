@@ -6,7 +6,8 @@ import {
   scrubOriginalFileName,
   handleFeedDirectory,
   downloadFile,
-  downloadFileToMemory
+  downloadFileToMemory,
+  formatDateForFileName,
 } from "./handleFiles";
 import path from "node:path";
 import { tmpdir } from "os";
@@ -107,25 +108,50 @@ describe("handleFiles.js", () => {
       const testFileStats = statSync(testFile);
       const testDownloadFileStats = statSync(testDownloadFile);
 
-      expect(testFileStats.size).toBeLessThanOrEqual(testDownloadFileStats.size);
+      expect(testFileStats.size).toBeLessThanOrEqual(
+        testDownloadFileStats.size
+      );
     });
   });
   describe("downloadFileToMemory()", () => {
     it("should handle downloading a file to memory", async () => {
       const testFileName = path.join(tempDestination, "test-image.jpg");
-      const testFile = readFileSync(testFileName)
+      const testFile = readFileSync(testFileName);
 
       const returnBuffer = testFile.buffer;
 
       vi.mocked(callFetch).mockImplementation(() => {
         return {
           ok: true,
-          arrayBuffer: async () => {return Promise.resolve(returnBuffer)}
+          arrayBuffer: async () => {
+            return Promise.resolve(returnBuffer);
+          },
         };
       });
 
-      const mockImg = await downloadFileToMemory()
-      expect(mockImg.byteLength).toEqual(testFile.buffer.byteLength)
+      const mockImg = await downloadFileToMemory();
+      expect(mockImg.byteLength).toEqual(testFile.buffer.byteLength);
+    });
+  });
+  describe("formatDateForFileName()", () => {
+    it("correctly formats a date as YYYY-MM-DD__", () => {
+      const date01 = new Date("July 1, 1983");
+      const date01AsString = formatDateForFileName(date01);
+
+      expect(date01AsString).toEqual("1983-07-01__");
+
+      // doesnt over pad
+      const date02 = new Date("September 11, 2001");
+      const date02AsString = formatDateForFileName(date02);
+
+      expect(date02AsString).toEqual("2001-09-11__");
+    });
+    it('returns "" for a non-date object or null', () => {
+      const nonDate01 = formatDateForFileName(undefined)
+      const nonDate02 = formatDateForFileName({})
+
+      expect(nonDate01).toEqual("")
+      expect(nonDate02).toEqual("")
     });
   });
 });
