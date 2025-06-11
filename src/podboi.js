@@ -12,7 +12,7 @@ import {
   downloadFile,
   scrubOriginalFileName,
   handleFeedDirectory,
-  formatDateForFileName
+  formatDateForFileName,
 } from "./lib/handleFiles/handleFiles.js";
 import { tagPodcastEpisode } from "./lib/tagFile/tagFile.js";
 
@@ -28,7 +28,7 @@ export async function handlePassedParamsAndRun(
 ) {
   // check our values
   if (!existsSync(destinationParam)) {
-    console.warning(
+    console.warn(
       `WARNING: {destinationParam} does not exist.  Pass a Directory which exists.`
     );
     process.exit(0);
@@ -46,7 +46,11 @@ export async function handlePassedParamsAndRun(
     for (let i = 0; i < feeds.length; i++) {
       const currentFeed = feeds[i];
       if (currentFeed) {
-        await downloadPodcastFeed(currentFeed, destinationParam, additionalOptions);
+        await downloadPodcastFeed(
+          currentFeed,
+          destinationParam,
+          additionalOptions
+        );
       } else {
         console.warn("SKIPPING: blank line in feed file");
       }
@@ -87,10 +91,10 @@ export async function downloadPodcastFeed(
   for (let i = 0; i < feedData.episodes.length; i++) {
     const episode = feedData.episodes[i];
     const safeTitle = `${scrubOriginalFileName(episode.title)}.mp3`;
-    const formattedDate = formatDateForFileName(episode.date)
+    const formattedDate = formatDateForFileName(episode.date);
     const fileName = additionalOptions.addDateToFileName
       ? `${formattedDate}${safeTitle}`
-      : safeTitle
+      : safeTitle;
 
     const destinationFile = path.join(feedDirectory, fileName);
     if (existsSync(destinationFile)) {
